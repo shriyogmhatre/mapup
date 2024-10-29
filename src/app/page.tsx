@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Dashboard from "~/app/_components/Dashboard";
 
 export default function HomePage() {
