@@ -39,6 +39,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { ScrollArea } from "~/components/ui/scroll-area";
 
 const CSV_URL = "/Electric_Vehicle_Population_Data.csv";
 
@@ -112,11 +113,11 @@ export default function Dashboard() {
       acc[type] = (acc[type] ?? 0) + 1;
       return acc;
     },
-    {} as Record<string, number>,
+    {} as Record<string, number>
   );
 
   const vehicleTypesData = Object.entries(vehicleTypes).map(
-    ([name, value]) => ({ name, value }),
+    ([name, value]) => ({ name, value })
   );
 
   const makeDistribution = filteredData.reduce(
@@ -125,7 +126,7 @@ export default function Dashboard() {
       acc[make] = (acc[make] ?? 0) + 1;
       return acc;
     },
-    {} as Record<string, number>,
+    {} as Record<string, number>
   );
 
   const makeDistributionData = Object.entries(makeDistribution)
@@ -146,7 +147,7 @@ export default function Dashboard() {
       }
       return acc;
     },
-    {} as Record<number, { year: number; averageRange: number; count: number }>,
+    {} as Record<number, { year: number; averageRange: number; count: number }>
   );
 
   const rangeByYearData = Object.values(rangeByYear)
@@ -158,11 +159,11 @@ export default function Dashboard() {
 
   const paginatedData = filteredData.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
   );
 
   const uniqueYears = Array.from(
-    new Set(data.map((item) => item["Model Year"])),
+    new Set(data.map((item) => item["Model Year"]))
   );
   const uniqueMakesList = Array.from(new Set(data.map((item) => item.Make)));
 
@@ -241,11 +242,12 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Vehicle Types Distribution</CardTitle>
           </CardHeader>
+          <ScrollArea>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={vehicleTypesData}>
@@ -256,11 +258,14 @@ export default function Dashboard() {
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
+            </ScrollArea>
         </Card>
+
         <Card>
           <CardHeader>
             <CardTitle>Top 5 Vehicle Makes</CardTitle>
           </CardHeader>
+          <ScrollArea>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
@@ -270,9 +275,11 @@ export default function Dashboard() {
                   nameKey="name"
                   cx="50%"
                   cy="50%"
-                  outerRadius={80}
-                  fill="#8884d8"
-                  label
+                  outerRadius="80%"
+                  label={(entry:{
+                    name:string,
+                    value:number
+                  }) => entry.name}
                 >
                   {makeDistributionData.map((entry, index) => (
                     <Cell
@@ -285,7 +292,9 @@ export default function Dashboard() {
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
+            </ScrollArea>
         </Card>
+
       </div>
 
       <Card>
